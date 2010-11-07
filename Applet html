@@ -1,0 +1,8 @@
+<HTML>
+<HEAD> <TITLE> CIS368 Project Two </TITLE> </HEAD>
+<BODY>
+<CENTER><H1><B>Retirement Planning Calculator</B></H1></CENTER>
+<CENTER><P><B>Ballpark Estimate by American Savings Education Council</B><P></CENTER>
+<CENTER><APPLET ARCHIVE = resources.jar CODE ="ViewClass.class" WIDTH=400 HEIGHT=250></APPLET></CENTER>
+</BODY>
+</HTML>
