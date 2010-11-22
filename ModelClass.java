@@ -1,6 +1,7 @@
 package cs368_projecttwo;
 
 
+import java.util.Calendar;
 import java.util.Observable;
 import java.text.DecimalFormat;
 
@@ -8,7 +9,7 @@ import java.text.DecimalFormat;
 /***************************************************************************
  * ModelClass.java
  *
- * This program is used to fincance and plan an individual's retirement.
+ * This program is used to finance and plan an individual's retirement.
  * This is class performs all the calculations and stores all the data
  * entered into the applet.
  * 
@@ -20,23 +21,7 @@ import java.text.DecimalFormat;
 public class ModelClass extends Observable{
 
 	//a basic array to store the data type and created for each field
-	public String [] dataStorage = new String [13];
-
-//	public ModelClass(){
-
-//	dataStorage[0]= "";
-//	dataStorage[1]= "test";
-//	dataStorage[2]= "";
-//	dataStorage[3]= "test";
-//	dataStorage[4]= "test";
-//	dataStorage[5]= "test";
-//	dataStorage[6]= "test";
-//	dataStorage[7]= "test";
-//	dataStorage[8]= "test";
-//	dataStorage[9]= "test";
-//	dataStorage[10]= "test";
-
-//	}
+	public String [] dataStorage = new String [19];
 
 	/***************************************************************************
 	 * Empties out the dataStorage array list.
@@ -105,15 +90,21 @@ public class ModelClass extends Observable{
 
 		// TODO add your handling code here:
 		String name;
-		double currentAge;
+		double currentAge =0;
 		double annualIncome;
 		double socialSecurityIncome;
 		double percentOfIncomeWanted = 0;
 		double otherIncomeAfterRetirement = 0;
 
+		int yearBorn;
+		int month;
+		int day;
+
 		name = getValue(0);
 
-		currentAge = Double.parseDouble(getValue(1));
+		yearBorn = Integer.parseInt(getValue(12));
+
+		currentAge = 2010 - yearBorn;
 
 
 		annualIncome = Double.parseDouble(getValue(2));
@@ -140,65 +131,86 @@ public class ModelClass extends Observable{
 
 		otherIncomeAfterRetirement = Double.parseDouble(getValue(5));
 
-		annualRetirementNeeded = (annualIncome * (percentOfIncomeWanted /100)) - socialSecurityIncome - otherIncomeAfterRetirement;
+		double partTimeIncome;
+		partTimeIncome = Double.parseDouble(getValue(15));
+		double employerPension;
+		employerPension = Double.parseDouble(getValue(16));
+		double annualRetirementWanted;
+
+
+		if(getValue(18).equals("calculatePercentage")){
+			percentOfIncomeWanted = Double.parseDouble(getValue(3));
+			annualRetirementNeeded = (annualIncome * (percentOfIncomeWanted /100)) - socialSecurityIncome 
+			- otherIncomeAfterRetirement - partTimeIncome - employerPension ;
+		}
+		else if(getValue(18).equals("doNotCalculatePercentage")){
+			annualRetirementWanted = Double.parseDouble(getValue(14));
+			annualRetirementNeeded = (annualRetirementWanted) - socialSecurityIncome 
+			- otherIncomeAfterRetirement - partTimeIncome - employerPension ;
+		}
 
 
 		setValue(df.format(annualRetirementNeeded),6);
 
 
-		double retirementAge = 0;
-		double lifeExpectancy = 0;
+		String retirementAge = "";
+		String lifeExpectancy = "";
+		String gender = "";
 		double factor = 0;
 
-		retirementAge = Double.parseDouble(getValue(7));
+		retirementAge = getValue(7);
 
-		lifeExpectancy = Double.parseDouble(getValue(8));
+		lifeExpectancy = getValue(8);
 
-		if(retirementAge == 55 && lifeExpectancy == 82)
+		gender = getValue(13);
+
+		if(retirementAge.equals("55-59") && lifeExpectancy.equals("Below Average") && gender.equals("Male"))
 			factor = 18.79;
-		else if(retirementAge == 55 && lifeExpectancy == 86)
+		else if(retirementAge.equals("55-59") && lifeExpectancy.equals("Below Average") && gender.equals("Female"))
 			factor = 20.53;
-		else if(retirementAge == 55 && lifeExpectancy == 89)
-			factor = 22.79;
-		else if(retirementAge == 55 && lifeExpectancy == 94)
-			factor = 23.46;
-		else if(retirementAge == 55 && lifeExpectancy == 97)
-			factor = 24.40;
-		else if(retirementAge == 60 && lifeExpectancy == 82)
-			factor = 16.31;
-		else if(retirementAge == 60 && lifeExpectancy == 86)
-			factor = 18.32;
-		else if(retirementAge == 60 && lifeExpectancy == 89)
-			factor = 19.68;
-		else if(retirementAge == 60 && lifeExpectancy == 92)
-			factor = 20.93;
-		else if(retirementAge == 60 && lifeExpectancy == 94)
+		else if(retirementAge.equals("55-59") && lifeExpectancy.equals("Average")&& gender.equals("Male"))
 			factor = 21.71;
-		else if(retirementAge == 60 && lifeExpectancy == 97)
+		else if(retirementAge.equals("55-59") && lifeExpectancy.equals("Average")&& gender.equals("Female"))
 			factor = 22.79;
-		else if(retirementAge == 65 && lifeExpectancy == 82)
-			factor = 13.45;
-		else if(retirementAge == 65 && lifeExpectancy == 86)
-			factor = 15.77;
-		else if(retirementAge == 65 && lifeExpectancy == 89)
-			factor = 17.35;
-		else if(retirementAge == 65 && lifeExpectancy == 92)
-			factor = 18.79;
-		else if(retirementAge == 65 && lifeExpectancy == 94)
-			factor = 19.68;
-		else if(retirementAge == 65 && lifeExpectancy == 97)
-			factor = 20.93;
-		else if(retirementAge == 70 && lifeExpectancy == 82)
-			factor = 10.15;
-		else if(retirementAge == 70 && lifeExpectancy == 86)
-			factor = 12.83;
-		else if(retirementAge == 70 && lifeExpectancy == 89)
-			factor = 14.65;
-		else if(retirementAge == 70 && lifeExpectancy == 92)
+		else if(retirementAge.equals("55-59") && lifeExpectancy.equals("Above Average")&& gender.equals("Male"))
+			factor = 23.46;
+		else if(retirementAge.equals("55-59") && lifeExpectancy.equals("Above Average")&& gender.equals("Female"))
+			factor = 24.40;
+		else if(retirementAge.equals("60-64") && lifeExpectancy.equals("Below Average")&& gender.equals("Male"))
 			factor = 16.31;
-		else if(retirementAge == 70 && lifeExpectancy == 94)
+		else if(retirementAge.equals("60-64") && lifeExpectancy.equals("Below Average")&& gender.equals("Female"))
+			factor = 18.32;
+		else if(retirementAge.equals("60-64") && lifeExpectancy.equals("Average")&& gender.equals("Male"))
+			factor = 19.68;
+		else if(retirementAge.equals("60-64") && lifeExpectancy.equals("Average")&& gender.equals("Female"))
+			factor = 20.93;
+		else if(retirementAge.equals("60-64") && lifeExpectancy.equals("Above Average")&& gender.equals("Male"))
+			factor = 21.71;
+		else if(retirementAge.equals("60-64") && lifeExpectancy.equals("Above Average")&& gender.equals("Female"))
+			factor = 22.79;
+		else if(retirementAge.equals("65-69") && lifeExpectancy.equals("Below Average")&& gender.equals("Male"))
+			factor = 13.45;
+		else if(retirementAge.equals("65-69") && lifeExpectancy.equals("Below Average")&& gender.equals("Female"))
+			factor = 15.77;
+		else if(retirementAge.equals("65-69") && lifeExpectancy.equals("Average")&& gender.equals("Male"))
 			factor = 17.35;
-		else if(retirementAge == 70 && lifeExpectancy == 97)
+		else if(retirementAge.equals("65-69") && lifeExpectancy.equals("Average")&& gender.equals("Female"))
+			factor = 18.79;
+		else if(retirementAge.equals("65-69") && lifeExpectancy.equals("Above Average")&& gender.equals("Male"))
+			factor = 19.68;
+		else if(retirementAge.equals("65-69") && lifeExpectancy.equals("Above Average")&& gender.equals("Female"))
+			factor = 20.93;
+		else if(retirementAge.equals("70+") && lifeExpectancy.equals("Below Average")&& gender.equals("Male"))
+			factor = 10.15;
+		else if(retirementAge.equals("70+") && lifeExpectancy.equals("Below Average")&& gender.equals("Female"))
+			factor = 12.83;
+		else if(retirementAge.equals("70+") && lifeExpectancy.equals("Average")&& gender.equals("Male"))
+			factor = 14.65;
+		else if(retirementAge.equals("70+") && lifeExpectancy.equals("Average")&& gender.equals("Female"))
+			factor = 16.31;
+		else if(retirementAge.equals("70+") && lifeExpectancy.equals("Above Average")&& gender.equals("Male"))
+			factor = 17.35;
+		else if(retirementAge.equals("70+") && lifeExpectancy.equals("Above Average")&& gender.equals("Female"))
 			factor = 18.79;
 
 
@@ -209,9 +221,9 @@ public class ModelClass extends Observable{
 
 		double ssFactor = 0;
 
-		if (retirementAge == 55)
+		if (retirementAge.equals("55-59"))
 			ssFactor = 8.8;
-		else if(retirementAge == 60)
+		else if(retirementAge.equals("60-64"))
 			ssFactor = 4.7;
 
 		socialSecurityIncome = socialSecurityIncome * ssFactor;
@@ -222,8 +234,18 @@ public class ModelClass extends Observable{
 
 		currentSavingsAmount = Double.parseDouble(getValue(9));
 
-		double yearsUntilRetirement = retirementAge - currentAge;
-		yearsUntilRetirement = retirementAge - currentAge;
+		double yearsUntilRetirement = 0;
+		double intValueRetirementAge = 0;
+		if (retirementAge.equals("55-59"))
+			intValueRetirementAge = 55;
+		else if(retirementAge.equals("60-64"))
+			intValueRetirementAge = 60;
+		else if(retirementAge.equals("65-69"))
+			intValueRetirementAge = 65;
+		else if(retirementAge.equals("70+"))
+			intValueRetirementAge = 70;
+
+		yearsUntilRetirement = intValueRetirementAge - currentAge;
 
 		if(yearsUntilRetirement <= 10)
 			factor = 1.3;
@@ -264,8 +286,11 @@ public class ModelClass extends Observable{
 		double annualAmountNeeded = 0;
 		annualAmountNeeded = additionalSavingsNeeded * factor;
 
+		double monthlyAmountNeeded = annualAmountNeeded/12;
+
 
 		setValue(df.format(annualAmountNeeded),11);
+		setValue(df.format(monthlyAmountNeeded),17);
 
 	}
 }
